@@ -1,0 +1,141 @@
+{
+  "name": "TP2 - Meteo",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a95c9580-2e7c-4833-abe1-f5ecbf5e1e45",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=49.44&longitude=1.10&current=temperature_2m,wind_speed_10m&timezone=Europe/Paris",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "3aabf026-2502-4069-9bf5-8ca8d22dc5b7",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "258a5714-74e5-4e9d-b920-5de543276605",
+              "name": "temperature",
+              "value": "={{ $json.current.temperature_2m }}",
+              "type": "number"
+            },
+            {
+              "id": "7db91f72-6f8f-4ce8-a5b0-c08f247e9ae3",
+              "name": "vent",
+              "value": "={{ $json.current.wind_speed_10m }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "ccd6fc7a-567d-438d-8b6a-37e2c4616114",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "votre-email@exemple.com",
+        "subject": "Météo du jour à Rouen",
+        "message": "=     <p>Bonjour Islam,</p>      <p>Voici la météo à Rouen :</p>      <ul>        <li>Température : {{ $json.temperature }} °C</li>        <li>Vent : {{ $json.vent }} km/h</li>      </ul>      <p>Bonne journée !</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "9cb53447-774f-4d58-8d18-1d98d5435813",
+      "name": "Send a message",
+      "webhookId": "aa65815f-23a2-4040-b371-112758ef114e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9oguWgV168MCVCBN",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "10294b4b-6f68-4658-98f4-f3061529cd0d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9275e20ab5461a794e0ab231705fd9aacc7c18d2b44114df85ab7fbd95ad2f68"
+  },
+  "nodeGroups": [],
+  "id": "nyRJAyL7zz6Yagl0",
+  "tags": []
+}

@@ -1,0 +1,120 @@
+{
+  "name": "TP3 - Chatbot FAQ",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ad7e2f9c-8459-4b4c-81be-967b23277a7b",
+      "name": "When chat message received",
+      "webhookId": "3cbefc7e-3659-46e9-99d3-6688adf0a334"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "   Tu es l'assistant du Fournil de Rouen, une boulangerie.\n   Réponds en français, en 2 à 3 phrases maximum, de façon polie et claire.\n   Informations :\n   - Horaires : du mardi au samedi de 7h à 19h30, dimanche de 7h à 13h, fermé le lundi.\n   - Adresse : 12 rue des Boulangers, 76000 Rouen.\n   - Spécialités : baguette tradition, pain au levain, croissants au beurre, tarte aux pommes.\n   - Commandes : possibles par téléphone au 02 00 00 00 00 (numéro fictif), 24 h à l'avance pour plus de 10 pièces.\n   - Livraison : non proposée.\n   Si l'information demandée n'est pas dans cette liste, dis poliment que tu ne sais pas et propose d'appeler la boulangerie.\n   N'invente jamais d'information."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "268d85a4-9597-4cfb-9f91-35222c6dd04c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        96,
+        208
+      ],
+      "id": "b7d059ba-dd6e-49f0-8c87-c8c0406659b0",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        240,
+        208
+      ],
+      "id": "d22fc201-605b-422d-aebc-fcc66ad447d9",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "57c9e867-55be-4b57-aa6d-605eebf6e8b3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9275e20ab5461a794e0ab231705fd9aacc7c18d2b44114df85ab7fbd95ad2f68"
+  },
+  "nodeGroups": [],
+  "id": "3XLA4tiUSkhNMScK",
+  "tags": []
+}

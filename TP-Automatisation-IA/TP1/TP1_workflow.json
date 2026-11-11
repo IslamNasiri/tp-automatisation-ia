@@ -1,0 +1,192 @@
+{
+  "name": "TP1 - Inscription",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Inscription session d'information",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nom"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Niveau",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Débutant"
+                  },
+                  {
+                    "option": "Intermédiaire"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d2717605-39d3-4f53-8ec8-747f0c91fa76",
+      "name": "On form submission",
+      "webhookId": "b232945f-8a99-4738-84ca-5afcc3520852"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1xnofVA8ZdOQbzyX16hfU8flI7fRQUbQURLmrOSRSWuY",
+          "mode": "list",
+          "cachedResultName": "Inscriptions",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xnofVA8ZdOQbzyX16hfU8flI7fRQUbQURLmrOSRSWuY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Feuille 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xnofVA8ZdOQbzyX16hfU8flI7fRQUbQURLmrOSRSWuY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nom": "={{ $json.Nom }}",
+            "Email": "={{ $json.Email }}",
+            "Niveau": "={{ $json.Niveau }}",
+            "Date": "={{ $json.submittedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nom",
+              "displayName": "Nom",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Niveau",
+              "displayName": "Niveau",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "873dde80-f501-4b2d-af32-59aac96208c5",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Sl8rDR27MybRveHm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Confirmation de votre inscription",
+        "message": "=   <p>Bonjour {{ $('On form submission').item.json.Nom }},</p>\n   <p>Votre inscription à la session d'information est bien enregistrée (niveau : {{ $('On form submission').item.json.Niveau }}).</p>\n   <p>À bientôt !</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "bf96eb92-3f0f-4650-8002-0c18d2750fd3",
+      "name": "Send a message",
+      "webhookId": "6ad19626-4982-4382-b761-93f5f6a85af6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9oguWgV168MCVCBN",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c48ce94d-dca4-4aa4-8a83-c39fa1eeafa1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9275e20ab5461a794e0ab231705fd9aacc7c18d2b44114df85ab7fbd95ad2f68"
+  },
+  "nodeGroups": [],
+  "id": "Ufpl8aayXoGDvHqi",
+  "tags": []
+}
