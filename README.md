@@ -23,6 +23,13 @@ Auteur : Islam Nasiri, titulaire d'un BTS CIEL (Cybersécurité, Informatique et
 - La mémoire de conversation lui permet de comprendre « Et le lundi ? ».
 - Blocs utilisés : Chat Trigger, AI Agent, Simple Memory, OpenAI Chat Model.
 
+## TP4 : tri automatique des demandes clients
+**Workflow :** formulaire → IA → suivi dans un tableau → accusé de réception → alerte.
+- Une IA lit chaque demande et en extrait la **catégorie** (facturation, panne, question) et l'**urgence**.
+- Les demandes sont enregistrées dans Google Sheets, qui joue le rôle de petit CRM.
+- Le client reçoit un accusé de réception ; une alerte est envoyée seulement si l'urgence est haute.
+- Blocs utilisés : Form Trigger, Information Extractor, Google Sheets, Gmail, IF.
+
 ## Contenu des dossiers
 Chaque dossier contient le workflow exporté (`.json`) et des captures d'écran (workflow, résultat).
 
@@ -33,6 +40,3 @@ Dans n8n : **Workflows → Import from file** et choisir le fichier `.json`. Les
 - Relier des services avec des déclencheurs, des API et des expressions.
 - Lire et extraire des données JSON.
 - Écrire une consigne claire pour limiter les erreurs d'un agent IA et tester ses réponses.
-
-## Suite prévue
-Un workflow de tri automatique de demandes clients avec IA, et la reproduction d'un TP avec Make.
